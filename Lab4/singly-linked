@@ -1,0 +1,272 @@
+#include<cstdio>
+#include<cstdlib>
+class list{
+    private:
+             struct node{
+                 int data;
+                 struct node *next;
+             }*head;
+    public:
+             list()
+             {
+                head=nullptr;
+             }
+             int insertion_beg(int num);
+             int insertion_end(int num);
+             int insertion_pos(int num,int pos);
+             int delete_beg();
+             int delete_end();
+             int delete_pos(int pos);
+             void display_rev();
+             void display();
+             int reverse();
+             int search(int num);
+            
+};
+int main()
+{
+    list l1;
+    int opt;
+    while(1)
+    {
+      printf("Enter your choice between the following options\n1.Insertion at the beginning\n2.Insertion at the end\n3.Insertion at a position\n4.Deletion at the beginning\n5.Deletion at the end\n6.Deletion at a postion\n7.search\n8.Display\n9.Display reverse\n10.Reverse link\n11.Exit\n");
+      scanf("%d",&opt);
+      switch(opt)
+      {
+        case 1:
+                int num;
+                printf("Enter the number you want to insert\n");
+                scanf("%d",&num);
+                l1.insertion_beg(num);
+                break;
+        case 2:
+                int num1;
+                printf("Enter the number you want to insert\n");
+                scanf("%d",&num1);
+                l1.insertion_end(num1);
+                break;
+        case 3:
+                int num2,check,position;
+                printf("Enter the number you want to insert\n");
+                scanf("%d",&num2);
+                printf("Enter the position where you want to insert\n");
+                scanf("%d",&position);
+                check=l1.insertion_pos(num2,position);
+                if(check==0)
+                printf("Invalid position\n");
+                break;
+        case 4:
+                l1.delete_beg();
+                break;
+        case 5:
+                l1.delete_end();
+                break;
+        case 6:
+                int position1;
+                printf("Enter the position where you want to insert\n");
+                scanf("%d",&position1);
+                l1.delete_pos(position1);
+                break;
+        case 7: 
+                break;
+        case 8:
+                l1.display();
+                break;
+        case 9:
+                l1.display_rev();
+                break;
+        case 10:
+                l1.reverse();
+                break;
+        case 11:
+                return 0;
+        default:
+                printf("Invalid option\n");
+
+        
+      }
+    }
+}
+//inserting at the beginning 
+int list::insertion_beg(int num)
+{
+    struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+    newnode->next=head;
+    head=newnode;
+    newnode->data=num;
+    return 1;
+}
+//inserting at the end
+int list::insertion_end(int num)
+{
+    struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+    if(head==nullptr)
+    {
+      head=newnode;
+      newnode->data=num;
+      newnode->next=nullptr;
+      return 1;
+    }
+    struct node* temp=(struct node*)malloc(sizeof(struct node*));
+    temp=head;
+    while(temp->next!=nullptr)
+    {
+        temp=temp->next;
+    }
+    temp->next=newnode;
+    newnode->data=num;
+    newnode->next=nullptr;
+    return 1;
+    
+
+}
+//inserting at a given position
+int list::insertion_pos(int num,int pos)
+{
+    struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+    if(pos==1)
+    {
+        newnode->next=head;
+        head=newnode;
+        newnode->data=num;
+        return 1;
+    }
+   struct node* temp=(struct node*)malloc(sizeof(struct node*));
+   temp=head;
+   for(int i=1;i<pos-1&&temp->next!=nullptr;i++)
+   {
+    temp=temp->next;
+   }
+   if(temp->next==nullptr)
+   {
+    return 0;
+   }
+   
+   newnode->next=temp->next;
+   temp->next=newnode;
+   newnode->data=num;
+   return 1;
+  
+}
+//deleting the beginning element 
+int list::delete_beg()
+{
+    if(head==nullptr)
+    {
+        return 0;
+    }
+    struct node* temp=(struct node*)malloc(sizeof(struct node*));
+    temp=head;
+    head=temp->next;
+    struct node* del_node=(struct node*)malloc(sizeof(struct node*));
+    del_node=temp; 
+    delete(temp);
+    return 1;
+}
+int list::delete_end()
+{
+  if(head==nullptr)
+    {
+        return 0;
+    }
+  struct node* temp=(struct node*)malloc(sizeof(struct node*));
+  temp=head;
+  while(temp->next->next!=nullptr)
+  {
+    temp=temp->next;
+  }
+  struct node* del_node=(struct node*)malloc(sizeof(struct node*));
+  del_node=temp->next;
+  temp->next=nullptr;
+  delete(del_node);
+  return 1;
+}
+int list::delete_pos(int pos)
+{
+  struct node* temp=(struct node*)malloc(sizeof(struct node*)); 
+  temp=head;
+  for(int i=0;i<pos;i++)
+  {
+    temp=temp->next;
+  }
+  
+  struct node* del_node=(struct node*)malloc(sizeof(struct node*));
+  del_node=temp;
+  temp=temp->next;
+  delete(del_node);
+  return 1;
+
+}
+int list::search(int num)
+{
+    struct node*temp=head;
+    if(head==nullptr)
+    {
+        printf("List id empty\n");
+        return 0;
+    } 
+   while(temp!=nullptr)
+   {
+    if(temp->data==num)
+    {
+      return 1;
+    }
+    temp=temp->next;
+   }
+   return 0;
+}
+
+void list::display()
+    {
+            struct node* temp=(struct node*)malloc(sizeof(struct node*));
+            temp=head;
+            while(temp!=nullptr)
+            {
+                printf("%d ",temp->data);
+                temp=temp->next;
+            } 
+            printf("\n");
+    }
+void list::display_rev()
+{
+    int count=0;
+    struct node* temp=(struct node*)malloc(sizeof(struct node*));
+    temp=head;
+    while(temp!=nullptr)
+    {
+       count++;
+       temp=temp->next; 
+    }
+    for(int i=count;i>0;i--)
+    {
+        temp=head;
+        for(int j=i-1;j>0;j--)
+        {
+            temp=temp->next;
+        }
+        printf("%d ",temp->data);
+    }
+    printf("\n");
+}
+
+int list::reverse(){
+  if(head==nullptr)
+  {
+    return 0;
+  }
+  else if(head->next==nullptr)
+  {
+    return 0;
+  }
+  struct node *next1 = NULL;
+  struct node *current = head;
+  struct node *prev = NULL;
+  while(current != NULL){
+      next1 = current->next;
+      current->next = prev;
+      prev = current;
+      current = next1;
+  }
+head=prev;
+return 1;
+}
