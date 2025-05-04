@@ -1,0 +1,126 @@
+#include<cstdio>
+#include<cstdlib>
+//class to implement stack 
+class stack{
+    private:
+             struct node{
+                   char data;
+                   struct node* next;
+             }*top;
+    public:
+             stack()
+             {
+                top=nullptr;
+             }
+             int push(char);
+             char pop();
+             char peek();
+             void display();
+}; 
+
+//Main function to implement push,pop,peek functions 
+int main()
+{
+    stack s1;
+    int opt;
+    while(1)
+    {
+        printf("Choose any one of the option given below\n1.push\n2.pop\n3.peek\n4.exit\n");
+        scanf("%d",&opt);
+        switch(opt)
+        {
+           case 1:
+                   char c1;
+                   printf("Enter the number to be pushed\n");
+                   scanf(" %c",&c1);
+                   s1.push(c1);
+                   s1.display();
+                   break;
+           case 2:
+                    char c2;
+                    c2=s1.pop();
+                   if(c2=='0')
+                   {
+                    printf("The list is empty\n");
+                   }
+                   else
+                   {
+                    printf("The deleted element is %c\n",c2);
+                   }
+                   break; 
+           case 3:
+                   char c3;
+                    c3=s1.peek();
+                   if(c3=='0')
+                   {
+                    printf("The list is empty\n");
+                   }
+                   else
+                   {
+                    printf("The top element is %c\n",c3);
+                   }
+                   break; 
+           case 4:
+                   printf("Exiting program\n");
+                   return 0;
+           default:
+                   printf("Invalid option\n");
+        }
+    }
+}
+
+//Function to insert element into the stack 
+int stack::push(char num)
+{
+   struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+   newnode->data=num;
+   newnode->next=top;
+   top=newnode;
+   return 1;
+}
+
+//Function to remove the last inserted element from the stack
+char stack::pop()
+{
+    char del_elt;
+    if(top==nullptr)
+    {
+        return '0';
+    }
+    struct node* del_node=top;
+    del_elt=top->data;
+    top=top->next;
+    free(del_node);
+    return del_elt;
+}
+
+//Function to print the last inserted element
+char stack::peek()
+{
+    if(top==nullptr)
+    {
+        return '0';
+    }
+    char c;
+    c=top->data;
+    return c;
+}
+
+//Function to display the stack 
+void stack::display()
+{
+   if(top==nullptr)
+   {
+    printf("The list is empty\n");
+   }
+   else{
+    struct node* temp=top;
+    printf("The stack looks like\n");
+    while(temp!=nullptr)
+    {
+        printf(" %c\n",temp->data);
+        temp=temp->next;
+    }
+   }
+
+}
