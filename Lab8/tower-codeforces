@@ -1,0 +1,87 @@
+#include<cstdio>
+#include<cstdlib>
+
+// Sorting the array
+void bubblesort(int arr[],int size)
+{
+    int i,j;
+    for(i=0;i<size-1;i++)
+    {
+        for(j=0;j<size-i-1;j++)
+        {
+            if(arr[j]>arr[j+1])
+            {
+                int temp=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=temp;
+            }
+        }
+    }
+}
+
+//Main function to implement the problem 
+int main()
+{
+    int t,arr_size;
+    
+    printf("Enter the number of testcases\n");
+    scanf("%d",&t);
+    arr_size=t;
+    int c[t];
+    if(t>0 && t<=10000)
+    {
+    while(t)
+    {
+        int n;
+        printf("Enter the number of towers\n");
+        scanf("%d",&n);
+        if(n>=2 && n<=200000)
+        {
+        int a[n];
+        for(int i=0;i<n;i++)
+        {
+            scanf("%d",&a[i]);
+            if(a[i]<1 && a[i]>1000000000)
+            {
+                printf("%d is out of range\n",a[i]);
+                return 0;
+            }
+        }
+        int x=a[0];
+        int b[n-1];
+        for(int i=1;i<n;i++)
+        {
+          b[i-1]=a[i];
+        }
+        bubblesort(b,n-1);
+        for(int i=0;i<n-1;i++)
+        {
+            if(b[i]>x)
+            {
+                x+=(b[i]-x+1)/2;
+            }
+        }
+        c[arr_size-t]=x;
+        t--;
+       }
+       else
+       {
+         printf("The number of towers is out of range\n");
+       }
+       
+
+    }
+    printf("\n");
+    for(int i=0;i<arr_size;i++)
+    {
+        printf("%d\n",c[i]);
+    }
+
+
+    }
+else
+{
+    printf("The number of cases out of range\n");
+}
+return 1;
+}
