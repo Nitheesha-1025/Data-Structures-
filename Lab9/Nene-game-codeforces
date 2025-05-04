@@ -1,0 +1,45 @@
+
+
+#include <cstdio>
+#include <cstdlib>
+
+int min(int a, int b) {
+    return (a < b) ? a : b;
+}
+
+void solve() {
+    printf("Enter the number of elements in the sequence of a and number of teams of players\n");
+    
+    int k, q;
+    scanf("%d %d", &k, &q);
+
+    int a[k], n[q];
+
+    // Reading the sequence a[]
+    for (int i = 0; i < k; i++) {
+        scanf("%d", &a[i]);
+    }
+
+    // Reading the queries n[]
+    for (int i = 0; i < q; i++) {
+        scanf("%d", &n[i]);
+    }
+
+    // Process each query
+    for (int i = 0; i < q; i++) {
+        printf("%d ", min(a[0] - 1, n[i]));  // Added space for better output formatting
+    }
+    printf("\n");  // Move to next line after each test case output
+}
+
+int main() {
+    int t;
+    printf("Enter the number of test cases\n");
+    scanf("%d", &t);
+
+    while (t--) {
+        solve();
+    }
+    
+    return 0;
+}
