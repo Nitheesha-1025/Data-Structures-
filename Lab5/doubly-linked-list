@@ -1,0 +1,318 @@
+#include<cstdio>
+#include<cstdlib>
+class list{
+    private:
+             struct node{
+                 int data;
+                 struct node *next;
+                 struct node *prev;
+             }*head,*tail;
+    public:
+             list()
+             {
+                head=nullptr;
+                tail=nullptr;
+             }
+             int insertion_beg(int );
+             int insertion_end(int );
+             int insertion_pos(int,int);
+             int delete_beg();
+             int delete_end();
+             int delete_pos(int);
+             int search(int);
+             void display();
+            
+};
+//Main function to implement the menu of the program 
+int main()
+{
+    list l1;
+    int opt;
+    while(1)
+    {
+      printf("Enter your choice between the following options\n1.Insertion at the beginning\n2.Insertion at the end\n3.Insertion at a position\n4.Deletion at the beginning\n5.Deletion at the end\n6.Deletion at a postion\n7.search\n8.Display\n9.Exit\n");
+      scanf("%d",&opt);
+      switch(opt)
+      {
+        case 1:
+                int num;
+                printf("Enter the number you want to insert\n");
+                scanf("%d",&num);
+                l1.insertion_beg(num);
+                break;
+        case 2:
+                int num1;
+                printf("Enter the number you want to insert\n");
+                scanf("%d",&num1);
+                l1.insertion_end(num1);
+                break;
+        case 3:
+                
+                break;
+        case 4:
+                int check1;
+                check1=l1.delete_beg();
+                if(check1==0)
+                {
+                    printf("The list is empty\n");
+                }
+                else{
+                    printf("The deleted element is %d\n",check1);
+                }
+                break;
+        case 5:
+                int check2;
+                check2=l1.delete_end();
+                if(check2==0)
+                {
+                    printf("The list is empty\n");
+                }
+                else{
+                    printf("The deleted element is %d\n",check2);
+                }
+                break;
+        case 6:
+                int check4,pos1;
+                printf("Enter the position where you want to insert\n");
+                scanf("%d",&pos1);
+                check4=l1.delete_pos(pos1);
+                if(check4==0)
+                {
+                    printf("The list is empty or Invalid position\n");
+                }
+                else{
+                    printf("The deleted element is %d\n",check4);
+                }
+                break;
+        case 7: 
+                int check3,data;
+                printf("Enter the data you want to search\n");
+                scanf("%d",&data);
+                check3=l1.search(data);
+                if(check3==0)
+                {
+                    printf("Element not found\n");
+                }
+                else{
+                    printf("The number is found at the position %d\n",check3);
+                }
+                break;
+        case 8:
+                l1.display();
+                break;
+        case 9:
+                return 1;
+        default:
+                printf("Invalid option\n");
+      }
+    }
+}
+
+//Function to insert an element to the beginning of the list 
+int list::insertion_beg(int num)
+{
+    struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+    newnode->data=num;
+    if(head==nullptr) 
+    {
+      newnode->prev=nullptr;
+      newnode->next=nullptr;
+      head=tail=newnode;
+      return 1;
+    }
+    newnode->next=head;
+    newnode->prev=nullptr;
+    newnode->next->prev=newnode;
+    head=newnode;
+    return 1;
+}
+
+
+//Function to insert an element to the end of the list 
+int list::insertion_end(int num)
+{
+   struct node* newnode=(struct node*)malloc(sizeof(struct node*));
+    newnode->data=num;
+    if(tail==nullptr)   
+    {
+      newnode->prev=nullptr;
+      newnode->next=nullptr;
+      head=tail=newnode;
+      return 1;
+    }
+    tail->next=newnode;
+    newnode->next=nullptr;
+    newnode->prev=tail;
+    tail=newnode;
+    return 1;
+
+}
+//Function to insert at a position 
+int list::insertion_pos(int pos, int num) {
+    struct node* newnode = (struct node*)malloc(sizeof(struct node));
+    newnode->data = num;
+
+    if (head == nullptr || pos == 1) { 
+        if (head == nullptr) {  
+            newnode->next = newnode;
+            head = newnode;
+        } else {  
+            struct node* temp = head;
+            
+            
+            while (temp->next != head) {
+                temp = temp->next;
+            }
+
+            newnode->next = head; 
+            temp->next = newnode;   
+            head = newnode;         
+        }
+        return 1;
+    }
+
+    struct node* temp = head;
+    int count = 1;
+
+    
+    while (count < pos - 1 && temp->next != head) {
+        temp = temp->next;
+        count++;
+    }
+
+    
+    newnode->next = temp->next;
+    temp->next = newnode;
+
+    return 1;
+}
+
+
+ 
+int list::delete_beg()
+{
+    if(head==nullptr) 
+    {
+        return 0;
+    }
+    
+    if(head->next==nullptr) 
+    {
+        struct node* del_node=head;
+        int num=head->data;
+        head==nullptr;
+        tail=nullptr;
+        free(del_node);
+        return num;
+    }
+    struct node* del_node=head;
+    int num=head->data;
+    head->next->prev=nullptr;
+    head=head->next;
+    free(del_node);
+    return num;
+}
+
+//Function to delete the last element of the list
+int list::delete_end()
+{
+    if(head==nullptr) 
+    {
+        return 0;
+    }
+    if(tail==head)  
+    {
+        struct node* del_node=tail;
+        int num=tail->data;
+        head==nullptr;
+        tail=nullptr;
+        free(del_node);
+        return num;
+    }
+    struct node* del_node=tail;
+    int num=tail->data;
+    tail=tail->prev;
+    tail->next=nullptr;
+    
+    free(del_node);
+    return num;
+
+
+}
+//Function to delete the element at specfied position
+int list::delete_pos(int pos) 
+{
+  if(head==nullptr) 
+    {
+        return 0;
+    }
+
+  if(pos==1)  
+    {
+        struct node* del_node=head;
+        int num=head->data;
+        head=nullptr;
+        tail=nullptr;
+        free(del_node);
+        return num;
+    }
+  struct node* temp=head;
+  for(int i=0;i<pos-1&&temp->next!=nullptr;i++)
+  {
+    temp=temp->next;
+  }
+  if(temp->next!=nullptr)
+  {
+    return 0;
+  }
+  struct node* del_node=temp->next;
+  int num=del_node->data;
+  temp->next=del_node->next;
+  del_node->next->prev=temp;
+  free(del_node);
+  return num;
+
+
+}
+
+//Function to search the data in the list
+int list::search(int data)
+{
+    struct node* temp=head;
+    int i=1;
+    while(temp!=nullptr)
+    {
+        if(temp->data==data)
+        {
+            return i;
+        }
+        i++;
+        temp=temp->next;
+    }
+    return 0;
+}
+//Fuction to display the list in forward as well as backward direction 
+void list::display()
+{
+    if(head==nullptr)  
+    {
+        printf("The list is empty\n");
+    }
+    else
+    {
+      struct node* temp=head;
+      while(temp!=nullptr)
+      {
+        printf("%d ",temp->data);
+        temp=temp->next;
+      }
+      printf("\n");
+     temp=tail;
+      while(temp!=nullptr)
+      {
+        printf("%d ",temp->data);
+        temp=temp->prev;
+      }
+      printf("\n");
+    }
+}
